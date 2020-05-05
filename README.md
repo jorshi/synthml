@@ -16,7 +16,7 @@ Currently, only JUCE and the VST3 SDK are required for development.
 
 3) Clone this repo: `git clone https://github.com/jorshi/synthml.git`
 
-4) Enter the cloned porject and open SynthML.jucer
+4) Enter the cloned project and open SynthML.jucer
 
 5) Make sure you set the VST3SDK path in the export tab
 
