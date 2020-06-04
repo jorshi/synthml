@@ -25,6 +25,7 @@ SynthMlAudioProcessor::SynthMlAudioProcessor()
 #endif
 {
 
+    // Loading a plugin here just for test. Ultimately this will be initiated from the UI
     auto newPlugin = synthPluginFactory.createSynthPluginFromPath("/Library/Audio/Plug-Ins/VST/Dexed.vst");
     synth.swap(newPlugin);
 
