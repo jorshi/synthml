@@ -24,6 +24,8 @@ SynthMlAudioProcessor::SynthMlAudioProcessor()
                        )
 #endif
 {
+    auto newPlugin = synthPluginFactory.createSynthPluginFromPath("/Library/Audio/Plug-Ins/VST/Dexed.vst");
+    synth.swap(newPlugin);
 }
 
 SynthMlAudioProcessor::~SynthMlAudioProcessor()

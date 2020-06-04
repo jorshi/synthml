@@ -11,6 +11,8 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "SynthPlugin.h"
+#include "SynthPluginFactory.h"
 
 //==============================================================================
 /**
@@ -57,5 +59,8 @@ public:
 
 private:
     //==============================================================================
+    SynthPluginFactory synthPluginFactory;
+    std::unique_ptr<SynthPlugin> synth;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SynthMlAudioProcessor)
 };
