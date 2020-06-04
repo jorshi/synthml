@@ -8,19 +8,15 @@ Goal of this project is to develop an audio plugin that can host AU/VST audio sy
 
 Installation instructions will be updated throughout development.
 
-Currently, only JUCE and the VST3 SDK are required for development.
+Currently, only JUCE and the VST3/VST2 SDK are required for development. VST SDKs are included in the project folder and will link automatically.
 
 1) Download and install JUCE https://shop.juce.com/get-juce
 
-2) Download the VST3 SDK : https://www.steinberg.net/en/company/developers.html - Save folder in location were it will be handy, you will need to link to this later.
+2) Clone this repo: `git clone https://github.com/jorshi/synthml.git`
 
-3) Clone this repo: `git clone https://github.com/jorshi/synthml.git`
+3) Enter the cloned project and open SynthML.jucer
 
-4) Enter the cloned project and open SynthML.jucer
-
-5) Make sure you set the VST3SDK path in the export tab
-
-6) Open and build in Xcode (or whatever IDE you are working in)
+4) Open and build in Xcode (or whatever IDE you are working in)
 
 ## Contributing
 
