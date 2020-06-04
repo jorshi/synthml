@@ -31,14 +31,14 @@ std::unique_ptr<SynthPlugin> SynthPluginFactory::createSynthPluginFromPath(Strin
     // Try to get the plugin description for the requested plugin
     auto typeForFile = pluginList.getTypeForFile(path);
     if (typeForFile == nullptr)
-        throw "Plugin not found.";
+        return nullptr;
 
     // Create a new instance of plugin
     String error;
     auto plugin = pluginFormatManager.createPluginInstance (*typeForFile, sampleRate, maxBlockSize, error);
     
     if (plugin == nullptr)
-        throw error;
+        DBG(error);
     
     // Create a new SynthPlugin object with loaded plugin and return
     auto synthPlugin = std::make_unique<SynthPlugin>(plugin.release());
