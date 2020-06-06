@@ -24,13 +24,15 @@ SynthMlAudioProcessor::SynthMlAudioProcessor()
                        )
 #endif
 {
-
     // Loading a plugin here just for test. Ultimately this will be initiated from the UI
     auto newPlugin = synthPluginFactory.createSynthPluginFromPath("/Library/Audio/Plug-Ins/VST/Dexed.vst");
     synth.swap(newPlugin);
 
     // If you hit this the plugin wasn't loaded correctly. Make sure path above is correct.
     jassert(synth != nullptr);
+    
+    File target("/Users/jshier/development/Academic/spiegel_test/evaluation/audio/output_7.wav");
+    spiegelib.soundMatchRequest(target);
 }
 
 SynthMlAudioProcessor::~SynthMlAudioProcessor()

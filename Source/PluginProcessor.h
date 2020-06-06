@@ -13,6 +13,8 @@
 #include <JuceHeader.h>
 #include "SynthPlugin.h"
 #include "SynthPluginFactory.h"
+#include "SynthProgrammer.h"
+#include "SpiegelibConnector.h"
 
 //==============================================================================
 /**
@@ -60,6 +62,8 @@ public:
 private:
     //==============================================================================
     SynthPluginFactory synthPluginFactory;
+    SynthProgrammer programmer;
+    SpiegelibConnector spiegelib;
     std::unique_ptr<SynthPlugin> synth;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SynthMlAudioProcessor)

@@ -6,6 +6,14 @@
     <GROUP id="{BAE12421-129C-246F-6A58-8C06566A88C5}" name="Source">
       <FILE id="oBQPhN" name="Patch.cpp" compile="1" resource="0" file="Source/Patch.cpp"/>
       <FILE id="oZYtsi" name="Patch.h" compile="0" resource="0" file="Source/Patch.h"/>
+      <FILE id="GGF2Dy" name="SpiegelibConnector.cpp" compile="1" resource="0"
+            file="Source/SpiegelibConnector.cpp"/>
+      <FILE id="TprMIV" name="SpiegelibConnector.h" compile="0" resource="0"
+            file="Source/SpiegelibConnector.h"/>
+      <FILE id="ACvlJa" name="SynthProgrammer.cpp" compile="1" resource="0"
+            file="Source/SynthProgrammer.cpp"/>
+      <FILE id="DSo5HH" name="SynthProgrammer.h" compile="0" resource="0"
+            file="Source/SynthProgrammer.h"/>
       <FILE id="niYqOY" name="SynthPluginFactory.cpp" compile="1" resource="0"
             file="Source/SynthPluginFactory.cpp"/>
       <FILE id="Qaua12" name="SynthPluginFactory.h" compile="0" resource="0"
