@@ -16,8 +16,15 @@
 class SpiegelibConnector
 {
 public:
+    
+    enum ConnectionType
+    {
+        HTTP,
+        SOCKET
+    };
+    
     //==============================================================================
-    SpiegelibConnector(String host="localhost", String port="8000");
+    SpiegelibConnector(ConnectionType type=HTTP, String host="localhost", int port=8000);
     ~SpiegelibConnector();
     
     //==============================================================================
@@ -30,7 +37,10 @@ public:
     
 private:
     
+    ConnectionType connectionType;
     String host;
-    String port;
+    int port;
     URL url;
+    
+    std::unique_ptr<StreamingSocket> socket;
 };

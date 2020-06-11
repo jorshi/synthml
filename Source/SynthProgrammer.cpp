@@ -10,7 +10,7 @@
 
 #include "SynthProgrammer.h"
 
-SynthProgrammer::SynthProgrammer()
+SynthProgrammer::SynthProgrammer() : spiegelib(SpiegelibConnector::SOCKET, "localhost", 9999)
 {
     fileChooser = std::make_unique<FileChooser>("Select an audio file to sound match");
 }

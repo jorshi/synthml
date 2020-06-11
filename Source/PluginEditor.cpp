@@ -19,7 +19,7 @@ SynthMlAudioProcessorEditor::SynthMlAudioProcessorEditor (SynthMlAudioProcessor&
     // Create a button that allows user to select an audio file for a sound match target
     auto& programmer = processor.getProgrammer();
     loadTargetButton.setButtonText("Load Audio Target");
-    loadTargetButton.setBounds(100, 50, 100, 50);
+    loadTargetButton.setBounds(100, 75, 100, 50);
     loadTargetButton.onClick = [&programmer] () { programmer.soundMatchFromFile(); };
     addAndMakeVisible(&loadTargetButton);
     
