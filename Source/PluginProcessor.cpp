@@ -30,9 +30,6 @@ SynthMlAudioProcessor::SynthMlAudioProcessor()
 
     // If you hit this the plugin wasn't loaded correctly. Make sure path above is correct.
     jassert(synth != nullptr);
-    
-    File target("/Users/jshier/development/Academic/spiegel_test/evaluation/audio/output_7.wav");
-    spiegelib.soundMatchRequest(target);
 }
 
 SynthMlAudioProcessor::~SynthMlAudioProcessor()

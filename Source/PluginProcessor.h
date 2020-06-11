@@ -54,16 +54,18 @@ public:
     void setCurrentProgram (int index) override;
     const String getProgramName (int index) override;
     void changeProgramName (int index, const String& newName) override;
-
+ 
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    
+    //==============================================================================
+    SynthProgrammer& getProgrammer() { return programmer; };
 
 private:
     //==============================================================================
     SynthPluginFactory synthPluginFactory;
     SynthProgrammer programmer;
-    SpiegelibConnector spiegelib;
     std::unique_ptr<SynthPlugin> synth;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SynthMlAudioProcessor)

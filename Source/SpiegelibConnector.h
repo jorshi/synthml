@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "utils/json.hpp"
 
 class SpiegelibConnector
 {
@@ -20,6 +21,11 @@ public:
     ~SpiegelibConnector();
     
     //==============================================================================
+    /**
+     * Attempt to make a GET request to SpiegeLib to get parameters to sound match
+     * an audio file. The location of the audio file on disk is passed to SpiegeLib
+     * in the GET query parameters
+     */
     void soundMatchRequest(File target);
     
 private:

@@ -39,7 +39,11 @@ void SpiegelibConnector::soundMatchRequest(File target)
         // Successfully retrieved sound match parameters
         if (statusCode == 200)
         {
-            DBG(inputStream->readEntireStreamAsString());
+            auto result = inputStream->readEntireStreamAsString();
+            DBG(result);
+            auto json = nlohmann::json::parse(result.toStdString());
+            auto patch = json.at("patch");
+            
         }
         
         // Failed retrieving sound match parameters
