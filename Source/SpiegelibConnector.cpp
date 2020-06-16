@@ -11,66 +11,81 @@
 #include "SpiegelibConnector.h"
 
 //==============================================================================
-SpiegelibConnector::SpiegelibConnector(ConnectionType type, String host, int port)
-: connectionType(type), host(host), port(port)
+SpiegelibConnector::SpiegelibConnector(String host, int receivePort, int sendPort)
+: host(host), receivePort(receivePort), sendPort(sendPort), isConnected(false)
 {
-    if (connectionType == HTTP)
-        url = URL("http://" + host + ":" + String(port));
-
-    else if (connectionType == SOCKET)
-    {
-        socket = std::make_unique<StreamingSocket>();
-        if (socket->connect(host, port))
-            DBG("Successfully connected to SpiegeLib");
-        
-        else
-            DBG("Unable to connect to SpiegeLib");
-    }
-    
+    oscReceiver.addListener(this);
 }
 
 
 SpiegelibConnector::~SpiegelibConnector()
 {
-    
+    oscSender.disconnect();
+    oscReceiver.disconnect();
 }
 
 
 //==============================================================================
-// TODO this should return true or false depending on the success of the request
-void SpiegelibConnector::soundMatchRequest(File target)
+bool SpiegelibConnector::connect()
 {
-    URL requestURL = url.withNewSubPath("sound_match");
-    requestURL = requestURL.withParameter("target", target.getFullPathName());
+    oscSender.disconnect();
+    oscReceiver.disconnect();
+    isConnected = false;
     
-    StringPairArray responseHeaders;
-    int statusCode = 0;
-    std::unique_ptr<InputStream> inputStream(requestURL.createInputStream(false, nullptr, nullptr, String(),
-                                                                          -1, &responseHeaders, &statusCode));
-
-    if (inputStream != nullptr)
+    if (!oscSender.connect(host, sendPort))
     {
-        // Successfully retrieved sound match parameters
-        // TODO figure out how to parse this into a Patch
-        if (statusCode == 200)
-        {
-            auto result = inputStream->readEntireStreamAsString();
-            DBG(result);
-            auto json = nlohmann::json::parse(result.toStdString());
-            auto patch = json.at("patch");
-        }
-        
-        // Failed retrieving sound match parameters
-        else
-        {
-            DBG(statusCode);
-            DBG(inputStream->readEntireStreamAsString());
-        }
+        return false;
     }
     
-    // Wasn't able to connect to server
+    if (!oscReceiver.connect(receivePort))
+    {
+        oscSender.disconnect();
+        return false;
+    }
+    
+    isConnected = true;
+    return true;
+}
+
+
+bool SpiegelibConnector::soundMatchRequest(File target)
+{
+    if (!isConnected) return false;
+    
+    OSCMessage oscMsg(OSCAddressPattern("/sound_match"), target.getFullPathName());
+    if (oscSender.sendToIPAddress(host, sendPort, oscMsg))
+        return true;
+    
+    return false;
+}
+
+
+void SpiegelibConnector::oscMessageReceived(const OSCMessage& message)
+{
+    String address = message.getAddressPattern().toString();
+    auto callback = callbacks.find(address);
+    
+    if (callback != callbacks.end())
+    {
+        callback->second(message);
+    }
+}
+
+
+void SpiegelibConnector::registerCallback(const String &address, OSCCallback callback)
+{
+    auto currentCallback = callbacks.find(address);
+    
+    // Callback has not been registered if find returns a pointer to the end of the map
+    if (currentCallback == callbacks.end())
+    {
+        callbacks.insert(std::pair<String, OSCCallback>(address, callback));
+    }
+    
+    // Otherwise, replace the currently registered callback
     else
     {
-        DBG("Failed to connect to SpiegeLib server");
+        callbacks.erase(currentCallback);
+        callbacks.insert(std::pair<String, OSCCallback>(address, callback));
     }
 }

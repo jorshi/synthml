@@ -28,6 +28,10 @@ public:
      */
     void soundMatchFromFile();
     
+    /**
+     * Set new patch from OSC message
+     */
+    void setPatch(const OSCMessage& message);
 private:
     //==============================================================================
     SpiegelibConnector spiegelib;

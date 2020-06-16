@@ -10,9 +10,13 @@
 
 #include "SynthProgrammer.h"
 
-SynthProgrammer::SynthProgrammer() : spiegelib(SpiegelibConnector::SOCKET, "localhost", 9999)
+SynthProgrammer::SynthProgrammer()
 {
     fileChooser = std::make_unique<FileChooser>("Select an audio file to sound match");
+    
+    // Connect to spiegelib and register callbacks for specific OSC messages
+    spiegelib.connect();
+    spiegelib.registerCallback("/sound_match_success", [this](const OSCMessage& message){ this->setPatch(message); });
 }
 
 
@@ -23,4 +27,9 @@ void SynthProgrammer::soundMatchFromFile()
         File file(fileChooser->getResult());
         spiegelib.soundMatchRequest(file);
     }
+}
+
+void SynthProgrammer::setPatch(const OSCMessage& message)
+{
+    DBG(message[0].getString());
 }
