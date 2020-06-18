@@ -64,9 +64,8 @@ public:
 
 private:
     //==============================================================================
-    SynthPluginFactory synthPluginFactory;
     SynthProgrammer programmer;
-    std::unique_ptr<SynthPlugin> synth;
+    SynthPlugin* synth;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SynthMlAudioProcessor)
 };

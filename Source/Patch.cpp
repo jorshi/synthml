@@ -9,21 +9,37 @@
 */
 
 #include "Patch.h"
+using json = nlohmann::json;
 
 Patch::Patch()
 {
     
 }
 
+
+Patch::Patch(const String& patchJSON)
+{
+    auto parsed = json::parse(patchJSON.toStdString());
+    auto patchStart = parsed.find("patch");
+    
+    if (patchStart != parsed.end())
+        patchValues = patchStart->get<PatchList>();
+}
+
+
 Patch::~Patch()
 {
     
 }
 
-void Patch::setPatchValues(std::vector<std::pair<int, float>> newPatchValues) {
+
+void Patch::setPatchValues(PatchList newPatchValues)
+{
     patchValues = newPatchValues;
 }
 
-std::vector<std::pair<int, float>> Patch::getPatchValues() {
+
+const Patch::PatchList& Patch::getPatchValues() const
+{
     return patchValues;
 }

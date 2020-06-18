@@ -12,6 +12,13 @@
 
 SynthProgrammer::SynthProgrammer()
 {
+    // Loading a plugin here just for test. Ultimately this will be initiated from the UI
+    auto newPlugin = synthPluginFactory.createSynthPluginFromPath("/Library/Audio/Plug-Ins/VST/Dexed.vst");
+    synth.swap(newPlugin);
+    
+    // If you hit this the plugin wasn't loaded correctly. Make sure path above is correct.
+    jassert(synth != nullptr);
+    
     fileChooser = std::make_unique<FileChooser>("Select an audio file to sound match");
     
     // Connect to spiegelib and register callbacks for specific OSC messages
@@ -31,5 +38,9 @@ void SynthProgrammer::soundMatchFromFile()
 
 void SynthProgrammer::setPatch(const OSCMessage& message)
 {
-    DBG(message[0].getString());
+    if (message.size() > 0 && message[0].isString())
+        currentPatch = Patch(message[0].getString());
+    
+    if (synth != nullptr)
+        synth->setNewPatch(currentPatch);
 }

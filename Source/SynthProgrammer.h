@@ -11,8 +11,11 @@
 #pragma once
 
 #include <JuceHeader.h>
+
 #include "SynthPlugin.h"
+#include "SynthPluginFactory.h"
 #include "SpiegelibConnector.h"
+#include "Patch.h"
 
 class SynthProgrammer
 {
@@ -32,8 +35,13 @@ public:
      * Set new patch from OSC message
      */
     void setPatch(const OSCMessage& message);
+    
 private:
     //==============================================================================
+    SynthPluginFactory synthPluginFactory;
+    std::unique_ptr<SynthPlugin> synth;
+
+    Patch currentPatch;
     SpiegelibConnector spiegelib;
     std::unique_ptr<FileChooser> fileChooser;
 };
