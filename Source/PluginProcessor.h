@@ -61,11 +61,11 @@ public:
     
     //==============================================================================
     SynthProgrammer& getProgrammer() { return programmer; };
+    void prepareNewSynth();
 
 private:
     //==============================================================================
     SynthProgrammer programmer;
-    SynthPlugin* synth;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SynthMlAudioProcessor)
 };

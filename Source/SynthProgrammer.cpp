@@ -12,13 +12,6 @@
 
 SynthProgrammer::SynthProgrammer()
 {
-    // Loading a plugin here just for test. Ultimately this will be initiated from the UI
-    auto newPlugin = synthPluginFactory.createSynthPluginFromPath("/Library/Audio/Plug-Ins/VST/Dexed.vst");
-    synth.swap(newPlugin);
-    
-    // If you hit this the plugin wasn't loaded correctly. Make sure path above is correct.
-    jassert(synth != nullptr);
-    
     fileChooser = std::make_unique<FileChooser>("Select an audio file to sound match");
     
     // Connect to spiegelib and register callbacks for specific OSC messages
@@ -42,5 +35,25 @@ void SynthProgrammer::setPatch(const OSCMessage& message)
         currentPatch = Patch(message[0].getString());
     
     if (synth != nullptr)
+    {
         synth->setNewPatch(currentPatch);
+        DBG("Successfully loaded new patch");
+    }
+}
+
+
+bool SynthProgrammer::loadSynthFromPath(String path)
+{
+    // Loading a plugin here just for test. Ultimately this will be initiated from the UI
+    auto newPlugin = synthPluginFactory.createSynthPluginFromPath(path);
+    
+    // If nullptr then the plugin wasn't loaded successfully
+    if (newPlugin == nullptr)
+        return false;
+    
+    // Transfer plugin ownership to the shared pointer in this SynthProgrammer
+    synth.reset(newPlugin.release());
+    if (synthLoadedCallback) synthLoadedCallback();
+    
+    return true;
 }

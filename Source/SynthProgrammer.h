@@ -23,6 +23,12 @@ public:
     //==============================================================================
     SynthProgrammer();
     ~SynthProgrammer() {};
+    
+    /**
+     * Get a raw pointer to the current synthesizer. Will be a nullptr if there is no
+     * current active synth
+     */
+    SynthPlugin* getSynth() { return synth.get(); };
    
     /**
      * When called will open a file browser allowing the user to select
@@ -36,12 +42,21 @@ public:
      */
     void setPatch(const OSCMessage& message);
     
+    
+    bool loadSynthFromPath(String path);
+    
+    /**
+     * Callback function when a new synthesizer has been loaded
+     */
+    std::function<void()> synthLoadedCallback;
+    
 private:
     //==============================================================================
     SynthPluginFactory synthPluginFactory;
-    std::unique_ptr<SynthPlugin> synth;
+    std::shared_ptr<SynthPlugin> synth;
 
     Patch currentPatch;
     SpiegelibConnector spiegelib;
     std::unique_ptr<FileChooser> fileChooser;
+    
 };
