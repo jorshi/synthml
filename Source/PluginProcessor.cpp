@@ -24,13 +24,11 @@ SynthMlAudioProcessor::SynthMlAudioProcessor()
                        )
 #endif
 {
-
-    // Loading a plugin here just for test. Ultimately this will be initiated from the UI
-    auto newPlugin = synthPluginFactory.createSynthPluginFromPath("/Library/Audio/Plug-Ins/VST/Dexed.vst");
-    synth.swap(newPlugin);
-
-    // If you hit this the plugin wasn't loaded correctly. Make sure path above is correct.
-    jassert(synth != nullptr);
+    programmer.synthLoadedCallback = [this]() { this->prepareNewSynth(); };
+    bool loadedSynth = programmer.loadSynthFromPath("/Library/Audio/Plug-Ins/VST/Dexed.vst");
+    
+    // Wasn't able to load synth - make sure the path above is correct
+    jassert(loadedSynth);
 }
 
 SynthMlAudioProcessor::~SynthMlAudioProcessor()
@@ -150,7 +148,7 @@ void SynthMlAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
     // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
-
+    
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
     // Make sure to reset the state if your inner loop is processing
@@ -188,6 +186,12 @@ void SynthMlAudioProcessor::setStateInformation (const void* data, int sizeInByt
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+}
+
+//==============================================================================
+void SynthMlAudioProcessor::prepareNewSynth()
+{
+    DBG("here preparing new synth");
 }
 
 //==============================================================================

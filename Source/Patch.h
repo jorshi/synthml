@@ -11,18 +11,24 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "utils/json.hpp"
 
 class Patch
 {
 public:
     //==============================================================================
+    using Parameter = std::pair<int, float>;
+    using PatchList = std::vector<Parameter>;
+    
+    //==============================================================================
     Patch();
+    Patch(const String& patchJSON);
     ~Patch();
     
-    std::vector<std::pair<int, float>> getPatchValues();
-    void setPatchValues(std::vector<std::pair<int, float>>);
+    const PatchList& getPatchValues() const;
+    void setPatchValues(PatchList);
     
 private:
     //==============================================================================
-    std::vector<std::pair<int, float>> patchValues;
+    PatchList patchValues;
 };

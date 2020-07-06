@@ -13,6 +13,8 @@
 #include <JuceHeader.h>
 #include "SynthPlugin.h"
 #include "SynthPluginFactory.h"
+#include "SynthProgrammer.h"
+#include "SpiegelibConnector.h"
 
 //==============================================================================
 /**
@@ -52,15 +54,18 @@ public:
     void setCurrentProgram (int index) override;
     const String getProgramName (int index) override;
     void changeProgramName (int index, const String& newName) override;
-
+ 
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    
+    //==============================================================================
+    SynthProgrammer& getProgrammer() { return programmer; };
+    void prepareNewSynth();
 
 private:
     //==============================================================================
-    SynthPluginFactory synthPluginFactory;
-    std::unique_ptr<SynthPlugin> synth;
+    SynthProgrammer programmer;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SynthMlAudioProcessor)
 };
