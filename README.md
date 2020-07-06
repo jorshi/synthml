@@ -46,13 +46,15 @@ Currently, only JUCE and the VST3/VST2 SDK are required for development. VST SDK
 
 1) The example runs sound matching on Dexed. Install that [from here](https://asb2m10.github.io/dexed/).
 
-2) cd into the SynthML project example directoy, this contains a sound match bundle with a trained bidirectional LSTM model for running sound matching on Dexed. A sound match bundle is just a folder containing a loader.py file and the necessary data files to create a new SoundMatch object that can perform synthesizer sound matching within SpiegeLib. loader.py is responsible for instantiating the SoundMatch object. The idea is that a sound match bundle can be created for any synthesizer plugin using any number of machine learning techniques and then these can be easily switched out for use with SynthML.
+2) cd into the SynthML project example directory, this contains a sound match bundle with a trained bidirectional LSTM model for running sound matching on Dexed. A sound match bundle is just a folder containing a loader.py file and the necessary data files to create a new SoundMatch object that can perform synthesizer sound matching within SpiegeLib. loader.py is responsible for instantiating the SoundMatch object. The idea is that a sound match bundle can be created for any synthesizer plugin using any number of machine learning techniques and then these can be easily switched out for use with SynthML.
 
 3) Start the OSC sound match server with the location of the sound match bundle as an argument. synthml.server is a command line tool that is installed with SpiegeLib that reads a sound match bundle and starts a server that listens for OSC messages. OSC messages contain a reference to an audio file to perform sound matching on. The server runs sound matching as defined in the sound match bundle and returns the resulting synthesizer parameters for that sound.
 
 ```synthml.server bilstm_sound_matcher```
 
   * Note, you may get the following error: *ModuleNotFoundError: No module named 'numba.decorators'*. This is a conflict with the current version of librosa and can be fixed by downgrading numba: ```pip install numba==0.48```
+  
+  * You may also get an error regarding TensorFlow and scipy if you have a version of scipy other than 1.4.1 installed. This can be resolved by up/downgrading to scipy version 1.4.1: ```pip install scipy==1.4.1```
 
 4) Start SynthML and test sound matching an audio file. The python server should acknowledge communication.
 
