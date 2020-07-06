@@ -13,7 +13,7 @@ def load(root):
     """
 
     # Load the synthesizer state, which includes the list of overridden
-    # parameters. This allows us sound match to skip loading the actual VST
+    # parameters. This allows sound match to skip loading the actual VST
     synth_state = os.path.join(root, 'dexed_simple_fm.json')
 
     # Setup BiLSTM TensorFlow model
