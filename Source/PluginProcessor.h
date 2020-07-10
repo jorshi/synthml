@@ -62,10 +62,14 @@ public:
     //==============================================================================
     SynthProgrammer& getProgrammer() { return programmer; };
     void prepareNewSynth();
+    void updateCurrentSynth();
 
 private:
     //==============================================================================
+    
     SynthProgrammer programmer;
+    std::shared_ptr<SynthPlugin> currentSynth;
+    std::shared_ptr<SynthPlugin> queuedSynth;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SynthMlAudioProcessor)
 };

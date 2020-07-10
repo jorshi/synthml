@@ -44,7 +44,6 @@ void SynthProgrammer::setPatch(const OSCMessage& message)
 
 bool SynthProgrammer::loadSynthFromPath(String path)
 {
-    // Loading a plugin here just for test. Ultimately this will be initiated from the UI
     auto newPlugin = synthPluginFactory.createSynthPluginFromPath(path);
     
     // If nullptr then the plugin wasn't loaded successfully

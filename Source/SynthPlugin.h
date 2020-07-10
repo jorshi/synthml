@@ -22,6 +22,7 @@ public:
     ~SynthPlugin();
     
     const Array<AudioProcessorParameter*>& getParameters();
+    AudioPluginInstance* getAudioPlugin() { return plugin.get(); };
     
     void setNewPatch(const Patch& newPatch);
     void updateParameter(int parameterIndex, const float& value);

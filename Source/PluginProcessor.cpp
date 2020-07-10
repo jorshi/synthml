@@ -100,8 +100,11 @@ void SynthMlAudioProcessor::changeProgramName (int index, const String& newName)
 //==============================================================================
 void SynthMlAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    if (queuedSynth)
+        queuedSynth->getAudioPlugin()->prepareToPlay(sampleRate, samplesPerBlock);
+    
+    if (currentSynth)
+        currentSynth->getAudioPlugin()->prepareToPlay(sampleRate, samplesPerBlock);
 }
 
 void SynthMlAudioProcessor::releaseResources()
@@ -149,17 +152,12 @@ void SynthMlAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    // Update the current synthesizer plugin
+    updateCurrentSynth();
+    if (currentSynth)
     {
-        auto* channelData = buffer.getWritePointer (channel);
-
-        // ..do something to the data...
+        auto* plugin = currentSynth->getAudioPlugin();
+        plugin->processBlock(buffer, midiMessages);
     }
 }
 
@@ -191,7 +189,22 @@ void SynthMlAudioProcessor::setStateInformation (const void* data, int sizeInByt
 //==============================================================================
 void SynthMlAudioProcessor::prepareNewSynth()
 {
-    DBG("here preparing new synth");
+    std::shared_ptr<SynthPlugin> newSynth;
+    if ((newSynth = programmer.getSynth()))
+    {
+        auto* plugin = newSynth->getAudioPlugin();
+        plugin->prepareToPlay(this->getSampleRate(), this->getBlockSize());
+        queuedSynth = newSynth;
+    }
+}
+
+void SynthMlAudioProcessor::updateCurrentSynth()
+{
+    if (queuedSynth)
+    {
+        currentSynth = queuedSynth;
+        queuedSynth.reset();
+    }
 }
 
 //==============================================================================

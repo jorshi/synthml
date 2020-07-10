@@ -28,7 +28,12 @@ public:
      * Get a raw pointer to the current synthesizer. Will be a nullptr if there is no
      * current active synth
      */
-    SynthPlugin* getSynth() { return synth.get(); };
+    SynthPlugin* getSynthRaw() { return synth.get(); };
+    
+    /**
+     * Get a smart pointer to the current synthesizer.
+     */
+    std::shared_ptr<SynthPlugin> getSynth() { return synth; };
    
     /**
      * When called will open a file browser allowing the user to select
