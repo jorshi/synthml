@@ -48,7 +48,7 @@ public:
     void setPatch(const OSCMessage& message);
     
     
-    bool loadSynthFromPath(String path);
+    bool loadSynthFromPath(String path, double sampleRate=44100.0, int maxBlockSize=512);
     
     /**
      * Callback function when a new synthesizer has been loaded

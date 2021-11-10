@@ -24,18 +24,18 @@ SynthPluginFactory::~SynthPluginFactory()
 
 std::unique_ptr<SynthPlugin> SynthPluginFactory::createSynthPluginFromPath(String path, double sampleRate, int maxBlockSize)
 {
+    OwnedArray<PluginDescription> newPluginList;
     // Check for plugin given by path description and add to the plugin list
     for (int i = pluginFormatManager.getNumFormats(); --i >= 0;)
-        pluginList.scanAndAddFile(String(path), false, pluginDescriptions, *pluginFormatManager.getFormat(i));
-    
-    // Try to get the plugin description for the requested plugin
-    auto typeForFile = pluginList.getTypeForFile(path);
-    if (typeForFile == nullptr)
-        return nullptr;
+        pluginList.scanAndAddFile(String(path), false, newPluginList, *pluginFormatManager.getFormat(i));
 
+    if (newPluginList.size() == 0)
+        return nullptr;
+    
     // Create a new instance of plugin
     String error;
-    auto plugin = pluginFormatManager.createPluginInstance (*typeForFile, sampleRate, maxBlockSize, error);
+    auto* desc = newPluginList[0];
+    auto plugin = pluginFormatManager.createPluginInstance (*desc, sampleRate, maxBlockSize, error);
     
     if (plugin == nullptr)
         DBG(error);

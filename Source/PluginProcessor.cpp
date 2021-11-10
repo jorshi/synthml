@@ -25,10 +25,6 @@ SynthMlAudioProcessor::SynthMlAudioProcessor()
 #endif
 {
     programmer.synthLoadedCallback = [this]() { this->prepareNewSynth(); };
-    bool loadedSynth = programmer.loadSynthFromPath("/Library/Audio/Plug-Ins/VST/Dexed.vst");
-    
-    // Wasn't able to load synth - make sure the path above is correct
-    jassert(loadedSynth);
 }
 
 SynthMlAudioProcessor::~SynthMlAudioProcessor()
@@ -100,6 +96,12 @@ void SynthMlAudioProcessor::changeProgramName (int index, const String& newName)
 //==============================================================================
 void SynthMlAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    bool loadedSynth = programmer.loadSynthFromPath("/Library/Audio/Plug-Ins/VST/Dexed.vst",
+                                                    sampleRate,
+                                                    samplesPerBlock);
+    // Wasn't able to load synth - make sure the path above is correct
+    jassert(loadedSynth);
+    
     if (queuedSynth)
         queuedSynth->getAudioPlugin()->prepareToPlay(sampleRate, samplesPerBlock);
     
@@ -151,6 +153,9 @@ void SynthMlAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
     // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
+    
+    if (midiMessages.getNumEvents())
+        DBG("Midi press");
     
     // Update the current synthesizer plugin
     updateCurrentSynth();

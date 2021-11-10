@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="Hnx4pH" name="SynthML" projectType="audioplug" jucerVersion="5.4.7"
-              companyName="University of Victoria" pluginManufacturerCode="UVIC"
-              pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
+<JUCERPROJECT id="Hnx4pH" name="SynthML" projectType="audioplug" companyName="University of Victoria"
+              pluginManufacturerCode="UVIC" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
+              jucerFormatVersion="1">
   <MAINGROUP id="Lflh9o" name="SynthML">
     <GROUP id="{BAE12421-129C-246F-6A58-8C06566A88C5}" name="Source">
       <FILE id="oBQPhN" name="Patch.cpp" compile="1" resource="0" file="Source/Patch.cpp"/>

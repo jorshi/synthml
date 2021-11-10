@@ -42,9 +42,9 @@ void SynthProgrammer::setPatch(const OSCMessage& message)
 }
 
 
-bool SynthProgrammer::loadSynthFromPath(String path)
+bool SynthProgrammer::loadSynthFromPath(String path, double sampleRate, int maxBlockSize)
 {
-    auto newPlugin = synthPluginFactory.createSynthPluginFromPath(path);
+    auto newPlugin = synthPluginFactory.createSynthPluginFromPath(path, sampleRate, maxBlockSize);
     
     // If nullptr then the plugin wasn't loaded successfully
     if (newPlugin == nullptr)

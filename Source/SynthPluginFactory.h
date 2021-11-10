@@ -22,6 +22,7 @@ public:
     
     std::unique_ptr<SynthPlugin> createSynthPluginFromPath(String path, double sampleRate=44100.0, int maxBlockSize=1024);
     
+    
 private:
     //==============================================================================
     OwnedArray<PluginDescription> pluginDescriptions;
